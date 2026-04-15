@@ -1,0 +1,42 @@
+#################################
+###TEMA 03: CONTROL DE CALIDAD###
+#################################
+
+# Solicitamos un nodo
+srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=4G --pty bash -i
+# Cargamos conda
+module load conda
+# Activamos ambiente bioinformatica_curso
+source activate bioinformatica_curso
+
+# Nos aseguramos de estar en nuestro home
+cd
+pwd
+# Y creamos una carpeta
+mkdir data
+cd data/
+
+# Revisamos los archivos presentes en la carpeta compartida
+ls ../dir_semana_adn_01/raw/
+
+# Creamos ligas simbolicas a los archivos raw
+ln -s ../dir_semana_adn_01/raw/SRR13166685_subChr6_1.fastq
+ln -s ../dir_semana_adn_01/raw/SRR13166685_subChr6_2.fastq
+
+# Revisamos ayuda de fastqc
+fastqc --help
+
+# Evaluamos la calidad con fastqc
+fastqc SRR13166685_subChr6_1.fastq
+fastqc SRR13166685_subChr6_2.fastq
+
+# Ayuda de trimmomatic para limpieza de archivos
+trimmomatic --help
+
+# Linea de codigo base para correr la limpieza en trimmomatic
+trimmomatic PE -phred33 \
+ SRR13166685_subChr6_1.fastq SRR13166685_subChr6_2.fastq \
+ clean_SRR13166685_subChr6_1.fastq unpair_SRR13166685_subChr6_1.fastq \
+ clean_SRR13166685_subChr6_2.fastq unpair_SRR13166685_subChr6_2.fastq \
+ ILLUMINACLIP:NexteraPE-PE.fa:2:30:10 \
+ HEADCROP:3 SLIDINGWINDOW:4:15 MINLEN:50
