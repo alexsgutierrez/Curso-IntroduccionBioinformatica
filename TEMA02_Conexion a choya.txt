@@ -1,0 +1,25 @@
+# Creamos una liga simbólica a la carpeta compartida
+ln -s /home/sharedDir/dir_semana_adn_01/
+# Nos movemos a la carpeta
+cd dir_semana_adn_01/
+# y listamos los archivos y carpetas que ahí se encuentran
+ls
+
+# Lo siguiente es revisar los módulos disponibles
+module avail
+# Cargaremos el módulo conda, que nos permitirá gestionar el entorno para cargar los programas que necesitaremos
+module load conda
+# Descargamos el ambiente llamado bioinformatica_curso
+conda env create -f envs_bioinfo/bioinformatica_curso.yml
+# Verificamos los ambientes disponibles
+conda info --envs
+# Activamos el ambiente del curso
+source activate bioinformatica_curso
+# Ya tiene algunas herramientas instaladas
+conda list
+
+# Ahora, solicitaremos un nodo
+# Primero, revisamos la disponibilidad de nodos
+sinfo -Nel
+# Y ahora, solicitamos un nodo para trabajar
+srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=4G --pty bash -i
