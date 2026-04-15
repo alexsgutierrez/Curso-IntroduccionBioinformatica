@@ -1,0 +1,64 @@
+# Solicitamos un nodo 
+srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=2G --pty bash -i
+# Cargamos conda
+module load conda
+# Y activamos el ambiente
+source activate gatk_env
+
+# Nos posicionamos en nuestro home
+cd
+# Creamos una carpeta llamada snps
+mkdir snps
+cd snps/
+# Crearemos un lista de los archivos de entrada
+ls ../dir_semana_adn_01/alignment/dedup_*.bam | sed 's/^.\{37\}//' | sed 's/....$//' > samplelist.txt
+# Vemos la ayuda de la herramienta HaplotypeCaller de GATK
+gatk HaplotypeCaller --help
+
+------------------------------------------------------------------
+### ¡¡¡NO CORRER!!! ###
+# Creamos un loop 
+for name in `cat samplelist.txt`
+do
+gatk HaplotypeCaller  \
+   -R ../ref/reference.fasta \
+   -I ../alineamiento/dedup_SRR13166685.bam \
+   -L NC_007117.7:1000000-1500000 \
+   -O output_SRR13166685.vcf.gz \
+   -ERC GVCF
+done
+# Combinamos los archivos .vcf  
+gatk CombineGVCFs \
+  -R ../ref/reference.fasta \
+  --variant output_SRR13166685.vcf.gz \
+  --variant output_SRR13166687.vcf.gz \
+  --variant output_SRR13166688.vcf.gz \
+  --variant output_SRR13166689.vcf.gz \
+  --variant output_SRR13166690.vcf.gz \
+  --variant output_SRR13166691.vcf.gz \
+  --variant output_SRR13166692.vcf.gz \
+  --variant output_SRR13166693.vcf.gz \
+  --variant output_SRR13166694.vcf.gz \
+  --variant output_SRR13166695.vcf.gz \
+  -O combine.vcf.gz
+------------------------------------------------------------------
+
+# Debido a las limitantes en el servidor, se correra en batch
+# Parados en nuestra carpeta snps/ copiamos el archivo
+cp ../dir_semana_adn_01/batch_files/run_gatk.sh .
+# y lo revisamos
+vim run_gatk.sh
+# Recuerden para salir escribimos :wq y damos Enter
+# Ahora si podemos ponerlo a correr
+sbatch run_gatk.sh
+# Y podemos revisar que esta corriendo correctamente, cambiar "usuario" por su nombre de usuario
+squeue -u usuario
+
+# Veamos el tail con la información de los SNPs
+gunzip -c combine.vcf.gz | tail
+# Finalmente, podemos contabilizar cuantos snps obtuvimos
+gunzip -c combine.vcf.gz | grep '^NC' | wc -l
+
+# Podemos ver los genotipos con
+gatk GenotypeGVCFs -R ../ref/reference.fasta -V combine.vcf.gz -O geno.vcf.gz
+gunzip -c geno.vcf.gz | tail

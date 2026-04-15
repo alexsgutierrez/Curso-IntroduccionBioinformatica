@@ -1,0 +1,59 @@
+# Solicitamos un nodo 
+srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=2G --pty bash -i
+# Cargamos conda
+module load conda
+# Y activamos el ambiente
+source activate gatk_env
+
+----------------------------------------------------------------------------------------
+### ¡¡¡NO CORRER!!! ###
+# Realizaremos el filtrado utilizando la herramienta de samtools view
+samtools view \
+ --threads 4 \
+ -b -h  -q 20 \
+ -F UNMAP,MUNMAP,SECONDARY,QCFAIL,DUP,SUPPLEMENTARY \
+ -T ../ref/reference.fasta \
+ -o filtered_SRR13166685.bam \
+ aligned_SRR13166685.sam
+# Después se tienen que ordenar
+samtools sort \
+ --threads 4 \
+ --reference ../ref/reference.fasta \
+ -o sorted_SRR13166685.bam \
+ filtered_SRR13166685.bam
+# E indexar con samtools index (la opcion -@ es el numero de threads)
+samtools index sorted_SRR13166685.bam
+# Despues realizaremos el filtrado de lecturas duplicadas
+gatk MarkDuplicates \
+ -I sorted_SRR13166685.bam \
+ -O dedup_SRR13166685.bam \
+ -M metrics_SRR13166685.txt \
+ --REMOVE_DUPLICATES true
+# Y se indexa nuevamente con samtools index
+samtools index dedup_SRR13166685.bam
+-------------------------------------------------------------------------------------------
+
+# Debido a las limitantes en el servidor, se correra en batch
+# Parados en nuestra carpeta alineamiento/ copiamos el archivo
+cp ../dir_semana_adn_01/batch_files/run_filter_align.sh .
+# y lo revisamos
+vim run_filter_align.sh
+# Recuerden para salir escribimos :wq y damos Enter
+# Ahora si podemos ponerlo a correr
+sbatch run_filter_align.sh
+# Y podemos revisar que esta corriendo correctamente, cambiar "usuario" por su nombre de usuario
+squeue -u usuario
+
+# Podemos visualizar las diferencias con el archivo sam inicial y el filtrado
+samtools view aligned_SRR13166685.sam | wc -l
+samtools view filtered_SRR13166685.bam | wc -l
+# Se elimino un alto procentaje de lecturas que no pasaron los filtros de alineamiento
+
+# Podemos revisar un resumen del alineamiento
+samtools flagstat sorted_SRR13166685.bam
+# Y algunos otros datos 
+samtools stats sorted_SRR13166685.bam > alignment_stats.txt
+head -46 alignment_stats.txt
+# Se puede validar el archivo .bam, aunque seguramente apareceran errores debido a la eliminacion de reads
+picard ValidateSamFile I=dedup_SRR13166685.bam M=SUMMARY
+# Un error comun es MATE_NOT_FOUND, lo que tiene sentido, ya que se eliminan algunos reads y la informacion del FLAG no se actualiza para el otro read

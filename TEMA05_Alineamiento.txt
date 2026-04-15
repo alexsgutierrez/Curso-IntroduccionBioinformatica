@@ -1,0 +1,50 @@
+# Solicitamos un nodo 
+srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=2G --pty bash -i
+# Cargamos conda
+module load conda
+# Instalamos ambiente de gatk para busqueda de snps
+conda env create -f dir_semana_adn_01/envs_bioinfo/gatk_env.yml
+# Y activamos el ambiente
+source activate gatk_env
+
+# Creamos un directorio para el genoma de referencia
+mkdir ref
+cd ref/
+# Copiamos el genoma de referencia que esta en la carpeta compartida
+cp ../dir_semana_adn_01/ref/reference.fasta .
+# El primer paso es indexar el genoma de referencia
+bwa index -a bwtsw reference.fasta
+gatk CreateSequenceDictionary -R reference.fasta
+# Vemos los archivos, debemos tener 7 archivos
+ls
+
+# Nos colocamos en nuestro directorio home
+cd
+# y generamos una carpeta para el alineamiento
+mkdir alineamiento
+cd alineamiento/
+# Vemos algunas de las opciones de bwa mem
+bwa mem
+
+----------------------------------------------------------------------------------------
+### ¡¡¡NO CORRER!!! ###
+# Normalmente correríamos bwa mem como sigue
+bwa mem \
+ -t 4 \
+ -M \
+ -R '@RG\tID:L1\tLB:RPI9\tPL:illumina\tPU:s004\tSM:sample1' \
+ ../ref/reference.fasta \
+ ../data/clean_SRR13166685_subChr6_1.fastq  ../data/clean_SRR13166685_subChr6_2.fastq \
+ > aligned_SRR13166685.sam
+----------------------------------------------------------------------------------------
+
+# Debido a las limitantes en el servidor, se correra en batch
+# Parados en nuestra carpeta alineamiento/ copiamos el archivo
+cp ../dir_semana_adn_01/batch_files/run_alignment.sh .
+# y lo revisamos
+vim run_alignment.sh
+# Recuerden para salir escribimos :q y damos Enter
+# Ahora si podemos ponerlo a correr
+sbatch run_alignment.sh
+# Y podemos revisar que esta corriendo correctamente, cambiar por su nombre de usuario
+squeue -u semana_adn_25
