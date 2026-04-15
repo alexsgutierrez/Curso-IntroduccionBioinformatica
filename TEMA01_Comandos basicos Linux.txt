@@ -1,0 +1,165 @@
+# En linea de comando UNIX la sintaxis general es: comando argumento
+# Un argumento es una opcion o parametro del comando
+# Algunos son obligatorios y otros son opcionales
+	# por ejemplo: ls -l el comando ls muestra el contenido de la carpeta actual, -l es un argumento que le indica que el contenido debe mostrarse en formato amplio
+# Siempre es importante consultar el manual o la ayuda de los programas, por ejemplo, para consultar el manual del comando ls escribimos
+man ls
+# Presionamos la letra q para salir
+# Alternativamente, podemos ver la ayuda con el argumento --help 
+ls --help
+# El comando man funciona si existe un manual para el comando que deseamos utilizar,
+# mientras que la mayoria de comandos tienen el argumento --help (a veces con -h) 
+
+# Para crear directorios, se utiliza el comando mkdir
+# Podemos ver la ayuda
+mkdir --help
+# Y crear un directorio
+mkdir folder1
+# O incluir el argumento -p para crear una ruta de directorios
+mkdir -p folder2/folder2.1
+# Podemos ver que se creo el folder2.1 al interior del folder2 con el comando ls
+ls folder2/
+
+# Siempre es importante conocer el directorio donde estamos parados
+# Para eso, utilizamos el comando pwd
+pwd
+# Actualmente, debemos estar en el directorio de nuestro usuario, algo asi como /home/semana_adn_XX/
+
+# Para movernos a un directorio, utilizamos el comando cd
+cd folder1/
+# Revisamos que ahora estamos en folder1 con pwd
+pwd
+# Para irnos regresarnos al directorio anterior, escribimos cd ../
+cd ../
+# Y nuevamente revisamos si efectivamente estamos en un folder superior
+pwd
+# Ahora nos moveremos hasta el folder2.1 con
+cd folder2/folder2.1/
+# Y comprobamos con
+pwd
+# Para volver hasta el directorio principal, tengo que moverme dos carpetas hacia atras con
+cd ../../
+# Y nos aseguramos que estamos en el directorio principal
+pwd
+# Otras opciones que pueden servir de cd son
+cd # Sin argumentos nos vuelve a nuestro directorio principal o de usuario
+cd - # Argumento - regresa al ultimo directorio en que estuve
+
+# Ahora bien, para crear y manipular archivos, existen varias opciones, como vim o nano
+# Por ejemplo, para ejecutar vim, solo es necesario ejecutarlo con el nombre del archivo 
+# Sel archivo existe lo abrirá, si el archivo no existe creará un archivo nuevo
+vim archivo_nuevo.txt
+# Esto nos abrira un texto nuevo sin contenido
+# Para comenzar a escribir, presionamos la tecla i (Insert)
+i
+# Con esto, podemos comenzar a capturar texto, por ejemplo, peguen el siguiente texto:
+
+Buddy, you're a boy, make a big noise
+Playing in the street, gonna be a big man someday
+You got mud on your face, you big disgrace
+Kicking your can all over the place, singin'
+We will, we will rock you
+We will, we will rock you
+Buddy, you're a young man, hard man
+Shouting in the street, gonna take on the world someday
+You got blood on your face, you big disgrace
+Waving your banner all over the place
+We will, we will rock you (sing it out)
+We will, we will rock you
+Buddy, you're an old man, poor man
+Pleading with your eyes, gonna make you some peace someday
+You got mud on your face, big disgrace
+Somebody better put you back into your place
+We will, we will rock you, sing it
+We will, we will rock you, everybody
+We will, we will rock you, hmm
+We will, we will rock you
+Alright
+
+# Una vez que terminamos de capturar, presionamos la tecla ESC para salir del modo de Insertar texto
+# Para cerrar y/o guardar el archivo, necesitamos escribir dos puntos y cualquiera de las opciones siguientes
+:w # Para guardar
+:wq # Para guardar y salir
+:q! # Si deseo salir sin guardar
+:sav file # Si deseo guardar con otro nombre
+# NOTA: Es importante no generar carpetas ni archivos con espacios entre palabras y evitar el uso de guiones medios
+# Lo anterior porque Linux los puede interpretar como argumentos adicionales
+# En su defecto, es mejor utilizar guion bajo (_) o en mayusculas cada palabra
+# Por ejemplo archivo_nuevo_version2.txt o bien ArchivoNuevoVersion2.txt
+
+# Podemos verificar que se guardo el archivo con
+ls
+# Podemos consultar el encabezado con el comando head
+head --help
+head archivo_nuevo.txt
+head -n 4 archivo_nuevo.txt
+# O la parte final del mismo con el comando tail
+tail --help
+tail archivo_nuevo.txt
+tail -n 5 archivo_nuevo.txt
+# Podriamos visualizar el archivo con algunos comandos como
+less archivo_nuevo.txt # Para salir es necesario presionar la tecla q
+nano archivo_nuevo.txt # Para salir presionamos Ctrl+X
+cat archivo_nuevo.txt # Imprime todo el texto en la pantalla, no recomendado para archivos grandes
+
+# Ese mismo archivo lo podemos copiar a otro directorio
+cp --help
+cp archivo_nuevo.txt folder1/
+ls folder1/
+# O tambien lo podemos renombrar 
+mv --help
+mv archivo_nuevo.txt prueba.txt
+ls
+# Este mismo comando permite moverlo a otro directorio
+mv prueba.txt folder2/folder2.1/
+# Puedo revisar lo que tengo en mis directorios
+ls # Directorio actual
+ls folder1/ 
+ls folder2/folder2.1/
+# Si deseo copiar el archivo prueba.txt que esta en folder 2.1 a mi directorio actual, solo escribo un punto al final
+cp folder2/folder2.1/prueba.txt .
+# O podria moverlo y cambiar de nombre
+mv folder1/archivo_nuevo.txt archivo.txt
+ls
+
+# Si deseo eliminar ese archivo, utilizo el comando rm
+rm --help
+rm archivo.txt
+ls
+# Este mismo comando sirve para remover directorios, con el argumento -r
+rm -r folder1/
+ls
+
+# Otros comandos que son utiles son:
+wc --help # Permite contar palabras en un archivo
+wc prueba.txt # Nos da el numero de lineas, numero de palabras y cantidad de caracteres en el archivo
+wc -l prueba.txt # Si solo queremos el numero de lineas del archivo
+
+# Ahora bien, si queremos identificar un patron en nuestro archivo, podemor utilizar el comando grep
+grep --help
+# Es un comando muy funcional, pero para efectos del curso, nos servira para identificar patrones
+# Por ejemplo, si deseo ver las lineas que comienzan con W
+grep "B" prueba.txt
+# Si queremos unicamente contabilizarlas
+grep -c "B" prueba.txt
+
+# Tambien, podemos crear un nuevo archivo a partir de otro archivo con el operador >
+# Por ejemplo, si quiero crear un nuevo archivo con las lineas que comienzan con "W", puedo
+grep "W" prueba.txt > pruebaW.txt
+# Esto debe haber creado un nuevo archivo llamado pruebaW.txt, lo podemos verificar y visualizar
+ls
+head pruebaW.txt
+
+# En linux existe la posibilidad de ejecutar comandos encadenados (pipes o pipelines)
+# En estos, el resultado del primer comando puede ser utilizado como entrada para un segundo comando
+# y el resultado de este para un tercer comando y así consecutivamente
+# Para encadenar comandos se utiliza el símbolo | entre los dos comandos
+# Por ejemplo, si deseo contar lineas que inicien con W, puedo hacer un pipe como
+grep "W" prueba.txt | wc -l
+# O bien, saber el texto entre las lineas 12 y 16 del archivo, como
+head -16 prueba.txt | tail -4
+# O ver cuantos We hay en las primeras 15 lineas
+head -15 prueba.txt | grep -o "We" | wc -l
+# Este tipo de comandos son utiles para conocer nuestros archivos de entrada
+# Por ejemplo, nos permitirian conocer el numero de secuencias en un archivo fasta comprimido sin necesidad de descomprimirlo, algo asi como
+# unzip -c secuencias.fasta.zip | grep ">" | wc -l
