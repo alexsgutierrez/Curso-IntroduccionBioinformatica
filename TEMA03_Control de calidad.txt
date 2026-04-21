@@ -16,12 +16,8 @@ pwd
 mkdir data
 cd data/
 
-# Revisamos los archivos presentes en la carpeta compartida
-ls ../dir_semana_adn_01/raw/
-
 # Creamos ligas simbolicas a los archivos raw
-ln -s ../dir_semana_adn_01/raw/SRR13166685_subChr6_1.fastq
-ln -s ../dir_semana_adn_01/raw/SRR13166685_subChr6_2.fastq
+ln -s /home/sharedDir/dir_semana_adn_01/raw/*.fastq
 
 # Revisamos ayuda de fastqc
 fastqc --help
@@ -40,3 +36,12 @@ trimmomatic PE -phred33 \
  clean_SRR13166685_subChr6_2.fastq unpair_SRR13166685_subChr6_2.fastq \
  ILLUMINACLIP:NexteraPE-PE.fa:2:30:10 \
  HEADCROP:3 SLIDINGWINDOW:4:15 MINLEN:50
+
+# Hay que evaluar la calidad de los archivos de salida
+fastqc clean_SRR131666*_subChr6_1.fastq
+
+# TAREA
+# Analizar la calidad de todos los archivos fastqc en su carpeta
+# Hacer un control de calidad de todos los archivos fastqc cambiando los parametros en trimmomatic, evaluando calidad antes y después
+# Enviar un reporte (en equipo) al profesor con los parámetros de filtrado en trimmomatic que ustedes eligieron como los mejores
+# En el reporte deben discutir: ¿por qué esos parámetros que ustedes seleccionaron son los más adecuados para limpieza? Emplear referencias bibliográficas
