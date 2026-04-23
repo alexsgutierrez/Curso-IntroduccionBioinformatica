@@ -41,7 +41,7 @@ trimmomatic PE -phred33 \
 fastqc clean_SRR13166685_subChr6_*.fastq
 
 # TAREA
-# 1) Crear ligas simbólicas a todos archivos .fastq
+# 1) Crear ligas simbólicas a todos archivos .fastq (el punto al final indica que deben hacerse al directorio actual)
 ln -s /home/sharedDir/dir_semana_adn_01/raw/*.fastq .
 # 2) Solicitar un nodo y cargar el ambiente bioinformatica_curso
 srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=4G --pty bash -i
