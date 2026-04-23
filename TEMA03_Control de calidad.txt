@@ -17,7 +17,7 @@ mkdir data
 cd data/
 
 # Creamos ligas simbolicas a los archivos raw
-ln -s /home/sharedDir/dir_semana_adn_01/raw/*.fastq
+ln -s /home/sharedDir/dir_semana_adn_01/raw/SRR13166685_subChr6_*.fastq .
 
 # Revisamos ayuda de fastqc
 fastqc --help
@@ -38,7 +38,7 @@ trimmomatic PE -phred33 \
  HEADCROP:3 SLIDINGWINDOW:4:15 MINLEN:50
 
 # Hay que evaluar la calidad de los archivos de salida
-fastqc clean_SRR131666*_subChr6_1.fastq
+fastqc clean_SRR13166685_subChr6_*.fastq
 
 # TAREA
 # 1) Crear ligas simbólicas a todos archivos .fastq
