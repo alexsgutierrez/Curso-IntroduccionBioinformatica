@@ -47,7 +47,7 @@ ln -s /home/sharedDir/dir_semana_adn_01/raw/*.fastq .
 srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=4G --pty bash -i
 module load conda
 source activate bioinformatica_curso
-# 3) Analizar la calidad de todos los archivos .fastq en su carpeta
+# 3) Analizar la calidad con fastqc de todos los archivos .fastq que tienen en su carpeta
 # 4) Hacer pruebas con los archivos SRR13166689 y SRR13166693 cambiando los parametros de limpieza en trimmomatic y evaluando en fastqc hasta obtener un resultado que a ustedes les parezca adecuado
 # 5) En un documento, deben discutir por que eligieron esos parametros sustentandolo con base en literatura cientifica (al menos tres citas de libros o articulos cientificos)
 # 6) Hacer un control de calidad de todos los archivos .fastq con los parametros de trimmomatic que ustedes seleccionaron. Recuerden evaluar calidad para asegurarse que quedaron adecuadamente filtrados
