@@ -3,7 +3,7 @@
 #################################
 
 # Solicitamos un nodo
-srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=4G --pty bash -i
+srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=2G --pty bash -i
 # Cargamos conda
 module load conda
 # Activamos ambiente bioinformatica_curso
