@@ -41,7 +41,16 @@ trimmomatic PE -phred33 \
 fastqc clean_SRR131666*_subChr6_1.fastq
 
 # TAREA
-# Analizar la calidad de todos los archivos fastqc en su carpeta
-# Hacer un control de calidad de todos los archivos fastqc cambiando los parametros en trimmomatic, evaluando calidad antes y después
-# Enviar un reporte (en equipo) al profesor con los parámetros de filtrado en trimmomatic que ustedes eligieron como los mejores
-# En el reporte deben discutir: ¿por qué esos parámetros que ustedes seleccionaron son los más adecuados para limpieza? Emplear referencias bibliográficas
+# 1) Crear ligas simbólicas a todos archivos .fastq
+ln -s /home/sharedDir/dir_semana_adn_01/raw/*.fastq .
+# 2) Solicitar un nodo y cargar el ambiente bioinformatica_curso
+srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=4G --pty bash -i
+module load conda
+source activate bioinformatica_curso
+# 3) Analizar la calidad de todos los archivos .fastq en su carpeta
+# 4) Hacer pruebas con los archivos SRR13166689 y SRR13166693 cambiando los parametros de limpieza en trimmomatic y evaluando en fastqc hasta obtener un resultado que a ustedes les parezca adecuado
+# 5) En un documento, deben discutir por que eligieron esos parametros sustentandolo con base en literatura cientifica (al menos tres citas de libros o articulos cientificos)
+# 6) Hacer un control de calidad de todos los archivos .fastq con los parametros de trimmomatic que ustedes seleccionaron. Recuerden evaluar calidad para asegurarse que quedaron adecuadamente filtrados
+# ENTREGABLES:
+# a) El reporte (en equipo) generado en el punto 5
+# b) Los cuatro archivos .html de la evaluacion de calidad con fastqc despues del filtrado en trimmomatic con los parametros que ustedes seleccionaron (es decir, los archivos forward y reverse para las muestras SRR13166689 y SRR13166693 generados en el paso 4)
