@@ -12,8 +12,8 @@ cd ref/
 cp /home/sharedDir/dir_semana_adn_01/ref/reference.fasta .
 # El primer paso es indexar el genoma de referencia
 bwa index -a bwtsw reference.fasta
-gatk CreateSequenceDictionary -R reference.fasta
-# Vemos los archivos, debemos tener 7 archivos
+# gatk CreateSequenceDictionary -R reference.fasta
+# Vemos los archivos, debemos tener 6[7] archivos
 ls
 
 # Nos colocamos en nuestro directorio home
@@ -38,11 +38,11 @@ bwa mem \
 
 # Debido a las limitantes en el servidor, se correra en batch
 # Parados en nuestra carpeta alineamiento/ copiamos el archivo
-cp /home/sharedDir/dir_semana_adn_01/batch_files/run_alignment.sh .
+cp /home/sharedDir/dir_semana_adn_01/batch_files/run_alignment_GAH.sh .
 # y lo revisamos
-vim run_alignment.sh
+vim run_alignment_GAH.sh
 # Recuerden para salir escribimos :q y damos Enter
 # Ahora si podemos ponerlo a correr
-sbatch run_alignment.sh
+sbatch run_alignment_GAH.sh
 # Y podemos revisar que esta corriendo correctamente, cambiar por su nombre de usuario
 squeue -u semana_adn_XX
