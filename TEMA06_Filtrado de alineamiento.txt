@@ -23,14 +23,6 @@ samtools sort \
  filtered_SRR13166685.bam
 # E indexar con samtools index (la opcion -@ es el numero de threads)
 samtools index sorted_SRR13166685.bam
-# Despues realizaremos el filtrado de lecturas duplicadas
-gatk MarkDuplicates \
- -I sorted_SRR13166685.bam \
- -O dedup_SRR13166685.bam \
- -M metrics_SRR13166685.txt \
- --REMOVE_DUPLICATES true
-# Y se indexa nuevamente con samtools index
-samtools index dedup_SRR13166685.bam
 -------------------------------------------------------------------------------------------
 
 # Debido a las limitantes en el servidor, se correra en batch
@@ -58,4 +50,16 @@ head -46 alignment_stats.txt
 picard ValidateSamFile I=sorted_SRR13166685.bam M=SUMMARY
 # Un error comun es MATE_NOT_FOUND, lo que tiene sentido, ya que se eliminan algunos reads y la informacion del FLAG no se actualiza para el otro read
 
-TAREA
+# TAREA
+# 1) Solicitar un nodo y cargar el ambiente bioinformatica_curso.
+srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=4G --pty bash -i
+module load conda
+source activate bioinformatica_curso
+# 2) Realizar el alineamiento para todos los archivos .fastq limpios. Recuerden editar el archivo run_aligment_GAH.sh por muestra y correr con sbatch.
+sbatch run_alignment_GAH.sh
+# 3) Despues del alineamiento, hacer el filtrado de alineamiento para todas las muestras modificando el archivo run_filter_align_GAH.sh y corriendo con sbatch. Pueden modificar los flags que ustedes desean eliminar y/o retener con samtools
+sbatch run_filter_align_GAH.sh
+# 4) Revisar para cada muestra la cantidad (o porcentaje) de lecturas que fueron descartadas durante el filtrado debido a los flags.
+# 5) En un documento, deben incluir una tabla con la cantidad de lecturas mapeadas y las que fueron descartadas durante el filtrado. Discutir estos resultados y buscar en libros o articulos científicos ¿qué otros pasos de filtrado se pueden/deben aplicar después del alineamiento? Tambien indiquen si eligieron otros parametros de samtools para hacer su filtrado y argumenten su razonamiento.
+# ENTREGABLES:
+# El reporte (en equipo) generado en el punto 5
