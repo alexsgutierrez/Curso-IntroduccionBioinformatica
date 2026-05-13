@@ -3,7 +3,7 @@ srun --partition=cpu --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=2G --pty bash 
 # Cargamos conda
 module load conda
 # Y activamos el ambiente
-source activate gatk_env
+source activate bioinformatica_curso
 
 ----------------------------------------------------------------------------------------
 ### ¡¡¡NO CORRER!!! ###
@@ -35,12 +35,12 @@ samtools index dedup_SRR13166685.bam
 
 # Debido a las limitantes en el servidor, se correra en batch
 # Parados en nuestra carpeta alineamiento/ copiamos el archivo
-cp ../dir_semana_adn_01/batch_files/run_filter_align.sh .
+cp /home/sharedDir/dir_semana_adn_01/batch_files/run_filter_align_GAH.sh .
 # y lo revisamos
-vim run_filter_align.sh
+vim run_filter_align_GAH.sh
 # Recuerden para salir escribimos :wq y damos Enter
 # Ahora si podemos ponerlo a correr
-sbatch run_filter_align.sh
+sbatch run_filter_align_GAH.sh
 # Y podemos revisar que esta corriendo correctamente, cambiar "usuario" por su nombre de usuario
 squeue -u usuario
 
@@ -55,5 +55,7 @@ samtools flagstat sorted_SRR13166685.bam
 samtools stats sorted_SRR13166685.bam > alignment_stats.txt
 head -46 alignment_stats.txt
 # Se puede validar el archivo .bam, aunque seguramente apareceran errores debido a la eliminacion de reads
-picard ValidateSamFile I=dedup_SRR13166685.bam M=SUMMARY
+picard ValidateSamFile I=sorted_SRR13166685.bam M=SUMMARY
 # Un error comun es MATE_NOT_FOUND, lo que tiene sentido, ya que se eliminan algunos reads y la informacion del FLAG no se actualiza para el otro read
+
+TAREA
