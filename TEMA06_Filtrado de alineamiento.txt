@@ -60,6 +60,6 @@ sbatch run_alignment_GAH.sh
 # 3) Despues del alineamiento, hacer el filtrado de alineamiento para todas las muestras modificando el archivo run_filter_align_GAH.sh y corriendo con sbatch. Pueden modificar los flags que ustedes desean eliminar y/o retener con samtools
 sbatch run_filter_align_GAH.sh
 # 4) Revisar para cada muestra la cantidad (o porcentaje) de lecturas que fueron descartadas durante el filtrado debido a los flags.
-# 5) En un documento, deben incluir una tabla con la cantidad de lecturas mapeadas y las que fueron descartadas durante el filtrado. Discutir estos resultados y buscar en libros o articulos científicos ¿qué otros pasos de filtrado se pueden/deben aplicar después del alineamiento? Tambien indiquen si eligieron otros parametros de samtools para hacer su filtrado y argumenten su razonamiento.
+# 5) En un documento, crear una tabla con la cantidad de lecturas mapeadas y las que fueron descartadas durante el filtrado para cada muestra. Discutir estos resultados y buscar en libros o articulos científicos ¿qué otros pasos de filtrado se pueden/deben aplicar después del alineamiento para datos de WGS? Tambien indiquen si eligieron otros parametros de samtools para hacer su filtrado y argumenten su razonamiento.
 # ENTREGABLES:
 # El reporte (en equipo) generado en el punto 5
